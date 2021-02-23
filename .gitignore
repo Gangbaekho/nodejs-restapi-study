@@ -1,3 +1,6 @@
+# individual security
+*.s.*
+
 # Logs
 logs
 *.log

@@ -5,13 +5,27 @@ const { validationResult } = require("express-validator/check");
 
 const Post = require("../models/post");
 
+const POSTS_PER_PAGE = 2;
+
 exports.getPosts = (req, res, next) => {
+  const currentPage = req.query.page || 1;
+  let totalItems;
   Post.find()
+    .countDocuments()
+    .then((count) => {
+      totalItems = count;
+      return Post.find()
+        .skip((currentPage - 1) * POSTS_PER_PAGE)
+        .limit(POSTS_PER_PAGE);
+    })
     .then((posts) => {
-      res.status(200).json({
-        message: "Fetched poasts successfully",
-        posts: posts,
-      });
+      res
+        .status(200)
+        .json({
+          message: "Fetched posts successfully",
+          posts: posts,
+          totalItems: totalItems,
+        });
     })
     .catch((error) => {
       if (!error.statusCode) {
@@ -19,6 +33,19 @@ exports.getPosts = (req, res, next) => {
       }
       next(error);
     });
+  // Post.find()
+  //   .then((posts) => {
+  //     res.status(200).json({
+  //       message: "Fetched poasts successfully",
+  //       posts: posts,
+  //     });
+  //   })
+  //   .catch((error) => {
+  //     if (!error.statusCode) {
+  //       error.statusCode = 500;
+  //     }
+  //     next(error);
+  //   });
 };
 
 exports.createPost = (req, res, next) => {

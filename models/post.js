@@ -20,7 +20,7 @@ const postSchema = new Schema(
       required: true,
     },
   },
-  { timestamps: ture }
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Post", postSchema);

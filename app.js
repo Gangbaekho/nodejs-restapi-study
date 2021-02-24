@@ -2,7 +2,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 const feedRoutes = require("./routes/feed");
-const { restart } = require("nodemon");
 
 const app = express();
 
@@ -15,6 +14,7 @@ app.use((req, res, next) => {
     "GET, POST, PUT, DELETE, PATCH"
   );
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  next();
 });
 
 app.use("/feed", feedRoutes);

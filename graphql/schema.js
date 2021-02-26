@@ -21,6 +21,11 @@ module.exports = buildSchema(`
         post:[Post!]!
     }
 
+    type AuthData{
+        token:String!
+        userId:String!
+    }
+
     input UserInputData {
         email:String!
         name:String!
@@ -31,15 +36,9 @@ module.exports = buildSchema(`
         createUser(userInput:UserInputData!): User!
     }
 
-    type HelloType {
-        text:String!
-        values:Int!
-    }
-
     type RootQuery { 
-        hello:HelloType!
+        login(email:String!, password:String!):AuthData!
     }
-
 
     schema{
         query:RootQuery

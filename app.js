@@ -12,6 +12,7 @@ const authRoutes = require("./routes/auth");
 
 const graphqlSchema = require("./graphql/schema");
 const graphqlResolver = require("./graphql/resolvers");
+const auth = require("./middleware/is-auth");
 
 const app = express();
 
@@ -54,6 +55,8 @@ app.use((req, res, next) => {
   }
   next();
 });
+
+app.use(auth);
 
 app.use(
   "/graphql",
